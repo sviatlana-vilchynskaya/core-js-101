@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-properties */
 /* *********************************************************************************************
  *                                                                                             *
  * Please read the following tutorial before implementing tasks:                                *
@@ -64,8 +65,12 @@ function getPowerFunction(exponent) {
  *   getPolynom()      => null
  */
 
-function getPolynom() {
-  throw new Error('Not implemented');
+function getPolynom(...coefficients) {
+  return (x) => coefficients.reduce((polynomial, coefficient, i) => {
+    const power = coefficients.length - (i + 1);
+
+    return polynomial + (coefficient * Math.pow(x, power));
+  }, 0);
 }
 
 /**
@@ -82,9 +87,20 @@ function getPolynom() {
  *   ...
  *   memoizer() => the same random number  (next run, returns the previous cached result)
  */
-function memoize(/* func */) {
-  throw new Error('Not implemented');
-}
+const memoize = (func) => {
+  const cache = {};
+
+  return (...args) => {
+    const key = JSON.stringify(args);
+
+    if (cache[key] === undefined) {
+      cache[key] = func(...args);
+    }
+
+    return cache[key];
+  };
+};
+
 
 /**
  * Returns the function trying to call the passed function and if it throws,
